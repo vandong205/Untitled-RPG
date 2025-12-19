@@ -58,7 +58,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -72,7 +72,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -96,7 +96,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -150,12 +150,12 @@ TextureImporter:
       name: Attack-01-Sheet_0
       rect:
         serializedVersion: 2
-        x: 32
-        y: 15
-        width: 37
-        height: 46
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 35
+        y: 16
+        width: 27
+        height: 45
+      alignment: 9
+      pivot: {x: 0.258, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -172,12 +172,12 @@ TextureImporter:
       name: Attack-01-Sheet_1
       rect:
         serializedVersion: 2
-        x: 128
-        y: 15
-        width: 56
-        height: 65
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 125
+        y: 16
+        width: 62
+        height: 64
+      alignment: 9
+      pivot: {x: 0.21, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -195,11 +195,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 222
-        y: 15
-        width: 37
-        height: 62
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        y: 16
+        width: 35
+        height: 61
+      alignment: 9
+      pivot: {x: 0.345, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -217,11 +217,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 318
-        y: 15
-        width: 37
-        height: 50
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        y: 16
+        width: 36
+        height: 49
+      alignment: 9
+      pivot: {x: 0.335, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -238,12 +238,12 @@ TextureImporter:
       name: Attack-01-Sheet_4
       rect:
         serializedVersion: 2
-        x: 414
-        y: 15
-        width: 37
-        height: 50
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 415
+        y: 16
+        width: 34
+        height: 49
+      alignment: 9
+      pivot: {x: 0.324, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -260,12 +260,12 @@ TextureImporter:
       name: Attack-01-Sheet_5
       rect:
         serializedVersion: 2
-        x: 495
+        x: 494
         y: 3
-        width: 63
+        width: 65
         height: 67
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.48, y: 0.19}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -282,12 +282,12 @@ TextureImporter:
       name: Attack-01-Sheet_6
       rect:
         serializedVersion: 2
-        x: 583
-        y: 15
-        width: 56
-        height: 46
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 584
+        y: 16
+        width: 54
+        height: 45
+      alignment: 9
+      pivot: {x: 0.69, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -304,12 +304,12 @@ TextureImporter:
       name: Attack-01-Sheet_7
       rect:
         serializedVersion: 2
-        x: 679
-        y: 15
-        width: 56
-        height: 47
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 680
+        y: 16
+        width: 54
+        height: 46
+      alignment: 9
+      pivot: {x: 0.63, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -326,7 +326,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: a1235697d4f4f9a40affe1ea8ff1ba57
     internalID: 0
     vertices: []
     indices: 
