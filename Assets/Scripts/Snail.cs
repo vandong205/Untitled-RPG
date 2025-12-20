@@ -7,12 +7,13 @@ public class Snail : MonoBehaviour,IEnemy
     public Animator m_animator;
     public Rigidbody2D m_rb;
     public Slider m_slider;
+    public BoxCollider2D m_hitBox;
 
     private float m_moveDistance = 4f;
     private float m_moveSpeed = 8f;
     private float m_moveDelay = 1.5f;
 
-
+    public float m_attackDmg { get; set; } = 30;
     public float m_health { get; set; } = 50.0f;
     private int m_direction = -1;
 
@@ -85,8 +86,13 @@ public class Snail : MonoBehaviour,IEnemy
     }
     void Die()
     {
-        Debug.Log(gameObject.name + " da chet");
         m_animator.SetTrigger("Death");
+        Debug.Log(gameObject.name + " da chet");
         StopAllCoroutines();
+        foreach (var col in GetComponentsInChildren<Collider2D>())
+        {
+            col.enabled = false;
+        }
+        Destroy(gameObject, 1);
     }
 }

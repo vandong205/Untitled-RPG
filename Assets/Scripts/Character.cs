@@ -6,7 +6,8 @@ public class Character : MonoBehaviour
 {
     public Rigidbody2D rb;
     public InputActionAsset inputActions;
-    public Transform Sword;
+    public PlayerStatController playerStatController;
+    public Sword sword;
 
     private InputAction m_moveAction;
     private InputAction m_attackAction;
@@ -19,7 +20,13 @@ public class Character : MonoBehaviour
     private bool m_canMove = true;
     private bool m_isAttacking = false;
 
-    private float m_health = 100;
+    private float m_health = 500;
+    private float m_maxhealth = 500;
+    private float m_energy = 100;
+    private float m_maxenergy = 100;
+    private float m_attackenergy = 10;
+    private float m_ability = 0;
+    private float m_maxability = 100;
     enum PlayerState
     {
         Idle,
@@ -36,7 +43,9 @@ public class Character : MonoBehaviour
         m_attackAction = inputActions
             .FindActionMap("Player")
             .FindAction("Attack");
-        Sword.gameObject.SetActive(false);
+        playerStatController.SetHPBar(m_health/m_maxhealth);
+        playerStatController.SetEnergyBar(m_energy/m_maxenergy);
+        playerStatController.SetAbilityBar(m_ability / m_maxability);
     }
 
     private void OnEnable()
@@ -74,17 +83,32 @@ public class Character : MonoBehaviour
           rb.linearVelocity.y
       );
     }
+    public void CheckHit()
+    {
+        sword.Hit();
+    }
     private void Attack()
     {
         if (m_attackAction.triggered && !m_isAttacking)
         {
-            Sword.gameObject.SetActive(true);
+            m_energy =Mathf.Max(0,m_energy-m_attackenergy);
+            playerStatController.SetAbilityBar(m_ability / m_maxability);
+            m_ability = Mathf.Min(m_ability+m_attackenergy, m_maxability);
+            playerStatController.SetEnergyBar(m_energy / m_maxenergy);
             m_isAttacking = true;
             m_canMove = false;
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             m_animator.SetTrigger("Attack");
-            StartCoroutine(MoveSafetyRoutine(0.3f));
         }
+    }
+    public void TakeDamage(float dmg)
+    {
+        m_health = Mathf.Max(0, m_health - dmg);
+        playerStatController.SetHPBar(m_health/ m_maxhealth);
+        //m_animator.SetTrigger("TakeDmg");
+        Debug.Log(gameObject.name + " da nhan " + dmg.ToString() + " dmg");
+        if (m_health <= 0)
+            Death();
     }
     private void Death()
     {
@@ -126,10 +150,8 @@ public class Character : MonoBehaviour
         scale.x *= -1;
         transform.localScale = scale;
     }
-    private IEnumerator MoveSafetyRoutine(float delay)
+    public Vector2 getPositon()
     {
-        yield return new WaitForSeconds(delay);
-        Sword.gameObject.SetActive(false);
-        EnableMoving();
+        return transform.position;
     }
 }

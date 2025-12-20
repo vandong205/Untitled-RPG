@@ -12,13 +12,13 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - PlayerHitbox
+  - EnemyHitbox
+  - PlayerBodyCollider
+  - EnemyBodyCollider
+  - Background
+  - Foreground
+  - ViewDetect
   - 
   - 
   - 
@@ -41,6 +41,15 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 4153188951
+    locked: 0
+  - name: Ground
+    uniqueID: 1288887057
+    locked: 0
+  - name: Foreground
+    uniqueID: 3560107403
     locked: 0
   m_RenderingLayers:
   - Default
