@@ -6,11 +6,14 @@ public class HogAttack : MonoBehaviour
     {
         Debug.Log("Va cham player");
         Character player = collision.GetComponentInParent<Character>();
-        Hog hog = GetComponentInParent<Hog>() ;
-        if(hog != null)
+        if (player != null)
         {
-            Debug.Log("hog dang co:" + hog.getAttackDamage().ToString());
-            player.TakeDamage(hog.getAttackDamage());
+            Hog hog = GetComponentInParent<Hog>();
+            if (hog != null)
+            {
+                Debug.Log("hog dang co:" + hog.getAttackDamage().ToString());
+                player.TakeDamage(hog.getAttackDamage());
+            }
         }
         
     }

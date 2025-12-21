@@ -55,7 +55,6 @@ public class Snail : MonoBehaviour,IEnemy
     
     IEnumerator MoveStep()
     {
-        Vector3 scale = transform.localScale;
         m_animator.SetTrigger("Move");
 
         Vector2 startPos = m_rb.position;
