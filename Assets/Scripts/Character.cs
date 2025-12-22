@@ -11,6 +11,7 @@ public class Character : MonoBehaviour
 
     private InputAction m_moveAction;
     private InputAction m_attackAction;
+    private InputAction m_jumpAction;
 
     private float m_attackDmg = 10.0f;
     private Animator m_animator;
@@ -27,6 +28,7 @@ public class Character : MonoBehaviour
     private float m_attackenergy = 10;
     private float m_ability = 0;
     private float m_maxability = 100;
+    private bool onGround = true;
     enum PlayerState
     {
         Idle,
@@ -43,6 +45,9 @@ public class Character : MonoBehaviour
         m_attackAction = inputActions
             .FindActionMap("Player")
             .FindAction("Attack");
+        m_jumpAction = inputActions
+            .FindActionMap("Player")
+            .FindAction("Jump");
         playerStatController.SetHPBar(m_health/m_maxhealth);
         playerStatController.SetEnergyBar(m_energy/m_maxenergy);
         playerStatController.SetAbilityBar(m_ability / m_maxability);
@@ -61,9 +66,32 @@ public class Character : MonoBehaviour
     private void Update()
     {
         m_moveAmt = m_moveAction.ReadValue<Vector2>();
+
         UpdateAnimation();
+        CheckGrounded();
+        Jump();
         Attack();
         FlipCharacter();
+    }
+    private void CheckGrounded()
+    {
+        if (rb.linearVelocityY <= 0)
+        {
+            onGround = true;
+        }
+        else
+        {
+            onGround = false;
+        }
+        Debug.Log("OnGround: " + onGround);
+    }
+    private void Jump()
+    {
+        if (m_jumpAction.triggered && onGround)
+        {
+            m_animator.SetTrigger("Jump");
+            rb.linearVelocityY = 5;
+        }
     }
 
     private void FixedUpdate()
