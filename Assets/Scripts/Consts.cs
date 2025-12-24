@@ -8,7 +8,8 @@ public static class Consts
     }
     public static class VFXName
     {
-        public static readonly string Hit_Effect = "Hit_Effect"; 
+        public static readonly string Hit_Effect = "Hit_Effect";
+        public static readonly string Blood_Effect = "blood";
     }
 
 }

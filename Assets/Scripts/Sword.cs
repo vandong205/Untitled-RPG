@@ -6,7 +6,6 @@ public class Sword : MonoBehaviour
     public Collider2D swordCollider;  
     public LayerMask enemyMask;
     public int damage = 20;
-    public Transform m_hitpoint;
     public void Hit()
     {
         Debug.Log("Dang kiem tra Hit");
@@ -21,31 +20,16 @@ public class Sword : MonoBehaviour
         Debug.Log("Da chem trung " + count);        
         for (int i = 0; i < count; i++)
         {
-            IEnemy enemy = results[i].GetComponentInParent<IEnemy>();
+            IEnemy enemy = results[i].gameObject.transform.GetComponentInParent<IEnemy>();
+            AttackPoint attackpoints  = results[i].GetComponentInChildren<AttackPoint>();
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
-                //VFX
-                GameObject vfxobj = VFXPoolManager.Instance.getVFXObj();
-                VFXPlayer vfxplayer = vfxobj?.GetComponent<VFXPlayer>();
-                List<Sprite> sprites = VFXSpriteManager.Instance.GetVFX(Consts.VFXName.Hit_Effect);
-                if (vfxobj != null)
-                {
-                    vfxobj.transform.SetParent(transform);
-                    vfxobj.transform.localPosition = m_hitpoint.localPosition;
-                    if (vfxplayer != null)
-                    {
-                        if (sprites.Count == 0)
-                        {
-                            Debug.LogWarning("Khong the chay VFXplayer do khong ton tai VFX " + Consts.VFXName.Hit_Effect);
-                        }
-                        else
-                        {
-                            vfxplayer.SetSpriteList(sprites);
-                            vfxplayer.Play(27);
-                        }
-                    }
-                }
+                attackpoints?.PlayVFX();
+            }
+            else
+            {
+                Debug.LogWarning("Khogn tim thay IEnemy trong " + results[i].gameObject.transform.root.name);
             }
         }
     }

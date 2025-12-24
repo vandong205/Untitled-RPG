@@ -4,24 +4,31 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.U2D;
+using System.Linq;
 
 public class VFXSpriteManager : SingletonPattern<VFXSpriteManager>
 {
     private Dictionary<string,Sprite> VFXSprites = new Dictionary<string,Sprite>();
-
     public List<Sprite> GetVFX(string baseName)
     {
-        List<Sprite> result = new List<Sprite>();
-        foreach (var pair in VFXSprites)
-        {
-            if (pair.Key.StartsWith(baseName))
-            {
-                result.Add(pair.Value);
-            }
-        }
-        return result;
+        return VFXSprites
+            .Where(pair => pair.Key.StartsWith(baseName))
+            .OrderBy(pair => ExtractFrameIndex(pair.Key))
+            .Select(pair => pair.Value)
+            .ToList();
     }
-    public IEnumerator LoadVFXFromAddressable(string address)
+
+    private int ExtractFrameIndex(string key)
+{
+    int i = key.Length - 1;
+    while (i >= 0 && char.IsDigit(key[i]))
+        i--;
+
+    string numberPart = key.Substring(i + 1);
+    return int.TryParse(numberPart, out int index) ? index : 0;
+}
+
+public IEnumerator LoadVFXFromAddressable(string address)
     {
         var handle = Addressables.LoadAssetAsync<SpriteAtlas>(address);
         yield return handle;

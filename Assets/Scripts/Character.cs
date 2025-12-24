@@ -1,6 +1,7 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections;
 
 public class Character : MonoBehaviour
 {
@@ -8,19 +9,22 @@ public class Character : MonoBehaviour
     public InputActionAsset inputActions;
     public PlayerStatController playerStatController;
     public Sword sword;
+    public Animator animator;
+    public SpriteRenderer spriteRenderer;
+    public CircleCollider2D swordCollider;
 
-    private InputAction m_moveAction;
-    private InputAction m_attackAction;
-    private InputAction m_jumpAction;
+    private InputAction moveAction;
+    private InputAction attackAction;
+    private InputAction jumpAction;
+    private Vector2 moveAmt;
+
+
+    private bool _facingRight = true;
+    private float _runSpeed = 5f;
+    private bool _canMove = true;
+    private bool _isAttacking = false;
 
     private float m_attackDmg = 10.0f;
-    private Animator m_animator;
-    private Vector2 m_moveAmt;
-    private bool m_facingRight = true;
-    private float _runSpeed = 5f;
-    private bool m_canMove = true;
-    private bool m_isAttacking = false;
-
     private float m_health = 500;
     private float m_maxhealth = 500;
     private float m_energy = 100;
@@ -37,15 +41,16 @@ public class Character : MonoBehaviour
 
     private void Awake()
     {
-        m_animator = GetComponent<Animator>();
+        if(animator==null)
+        animator = GetComponentInChildren<Animator>();
 
-        m_moveAction = inputActions
+        moveAction = inputActions
             .FindActionMap("Player")
             .FindAction("Move");
-        m_attackAction = inputActions
+        attackAction = inputActions
             .FindActionMap("Player")
             .FindAction("Attack");
-        m_jumpAction = inputActions
+        jumpAction = inputActions
             .FindActionMap("Player")
             .FindAction("Jump");
         playerStatController.SetHPBar(m_health/m_maxhealth);
@@ -65,7 +70,7 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        m_moveAmt = m_moveAction.ReadValue<Vector2>();
+        moveAmt = moveAction.ReadValue<Vector2>();
 
         UpdateAnimation();
         CheckGrounded();
@@ -87,9 +92,9 @@ public class Character : MonoBehaviour
     }
     private void Jump()
     {
-        if (m_jumpAction.triggered && onGround)
+        if (jumpAction.triggered && onGround)
         {
-            m_animator.SetTrigger("Jump");
+            animator.SetTrigger("Jump");
             rb.linearVelocityY = 5;
         }
     }
@@ -101,13 +106,13 @@ public class Character : MonoBehaviour
     }
     private void Running()
     {
-        if (!m_canMove)
+        if (!_canMove)
         {
             Debug.Log("Khong the di chuyen");
             return;
         }
         rb.linearVelocity = new Vector2(
-          m_moveAmt.x * _runSpeed,
+          moveAmt.x * _runSpeed,
           rb.linearVelocity.y
       );
     }
@@ -117,23 +122,23 @@ public class Character : MonoBehaviour
     }
     private void Attack()
     {
-        if (m_attackAction.triggered && !m_isAttacking)
+        if (attackAction.triggered && !_isAttacking)
         {
             m_energy =Mathf.Max(0,m_energy-m_attackenergy);
             playerStatController.SetAbilityBar(m_ability / m_maxability);
             m_ability = Mathf.Min(m_ability+m_attackenergy, m_maxability);
             playerStatController.SetEnergyBar(m_energy / m_maxenergy);
-            m_isAttacking = true;
-            m_canMove = false;
+            _isAttacking = true;
+            _canMove = false;
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            m_animator.SetTrigger("Attack");
+            animator.SetTrigger("Attack");
         }
     }
     public void TakeDamage(float dmg)
     {
         m_health = Mathf.Max(0, m_health - dmg);
         playerStatController.SetHPBar(m_health/ m_maxhealth);
-        //m_animator.SetTrigger("TakeDmg");
+        //animator.SetTrigger("TakeDmg");
         Debug.Log(gameObject.name + " da nhan " + dmg.ToString() + " dmg");
         if (m_health <= 0)
             Death();
@@ -142,30 +147,30 @@ public class Character : MonoBehaviour
     {
         if (m_health <= 0)
         {
-            m_animator.SetTrigger("Death");
-            m_canMove = false;
+            animator.SetTrigger("Death");
+            _canMove = false;
         }
     }
     public void EnableMoving()
     {
         Debug.Log("EnableMoving CALLED");
-        m_canMove = true;
-        m_isAttacking = false;
+        _canMove = true;
+        _isAttacking = false;
     }
     public float getAttackDamage() { return this.m_attackDmg; }
     private void UpdateAnimation()
     {
-        bool isRunning = m_canMove&&Mathf.Abs(m_moveAmt.x) > 0.01f;
-        m_animator.SetBool("isRunning", isRunning);
+        bool isRunning = _canMove&&Mathf.Abs(moveAmt.x) > 0.01f;
+        animator.SetBool("isRunning", isRunning);
     }
 
     private void FlipCharacter()
     {
-        if (m_moveAmt.x > 0 && !m_facingRight)
+        if (moveAmt.x > 0 && !_facingRight)
         {
             Flip();
         }
-        else if (m_moveAmt.x < 0 && m_facingRight)
+        else if (moveAmt.x < 0 && _facingRight)
         {
             Flip();
         }
@@ -173,10 +178,17 @@ public class Character : MonoBehaviour
 
     private void Flip()
     {
-        m_facingRight = !m_facingRight;
-        Vector3 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
+        if (spriteRenderer == null) return;
+        _facingRight = !_facingRight;
+        spriteRenderer.flipX = !spriteRenderer.flipX;
+        swordCollider.gameObject.transform.localPosition = new Vector3(
+            swordCollider.gameObject.transform.localPosition.x * -1,
+            swordCollider.gameObject.transform.localPosition.y,
+            swordCollider.gameObject.transform.localPosition.z
+        );
+        Vector2 off = swordCollider.offset;
+        off.x = -off.x;
+        swordCollider.offset = off;
     }
     public Vector2 getPositon()
     {

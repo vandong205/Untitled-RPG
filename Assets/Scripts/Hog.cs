@@ -37,13 +37,14 @@ public class Hog : MonoBehaviour, IEnemy
     private Vector2 m_targetPos;
 
     // ====== RENDER ======
-    private SpriteRenderer m_sprite;
+    public SpriteRenderer m_sprite;
 
     // ====== UNITY ======
     private void Awake()
     {
         m_rb = GetComponent<Rigidbody2D>();
         m_animator = GetComponentInChildren<Animator>();
+        if(m_sprite==null)
         m_sprite = GetComponentInChildren<SpriteRenderer>();
 
         if (m_slider != null)
@@ -111,7 +112,6 @@ public class Hog : MonoBehaviour, IEnemy
         off.x = -off.x;
         m_view.offset = off;
         m_sprite.flipX = !m_sprite.flipX;
-
         m_direction *= -1;
     }
     bool IsBlocked()
@@ -161,16 +161,10 @@ public class Hog : MonoBehaviour, IEnemy
                 obstacleMask
             );
 
-            // Nếu ray chạm vật cản → không attack
             if (hit.collider != null)
             {
-                // Debug để nhìn ray
-                Debug.DrawLine(origin, hit.point, Color.red, 0.1f);
                 return;
             }
-
-            // Không có vật cản → attack
-            Debug.DrawLine(origin, target, Color.green, 0.1f);
             StartAttack(target);
             break;
         }

@@ -75,7 +75,7 @@ public class Snail : MonoBehaviour,IEnemy
     public void TakeDamage(float dmg)
     {
         m_health = Mathf.Max(0, m_health - dmg);
-        //m_animator.SetTrigger("TakeDmg");
+        //animator.SetTrigger("TakeDmg");
         Debug.Log(gameObject.name + " da nhan " + dmg.ToString()+" dmg");
         if (m_slider != null)
             m_slider.value = m_health;
